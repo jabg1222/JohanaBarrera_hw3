@@ -227,7 +227,7 @@ for (int i = 0; i < 10; ++i)
   return masas[index];
 }
 
-double Aceleracion( int plt, int ins_t)
+double Aceleracion_X( int plt, int ins_t)
 {
 
   double ac;
@@ -251,8 +251,63 @@ double Aceleracion( int plt, int ins_t)
   return ac;
 }
 
+
+double Aceleracion_Y( int plt, int ins_t)
+{
+
+  double ac;
+  int nt=30;
+  int num_planetas=10;
+  const double G= 4*pow(3.141592, 2);
+ 
+  for (int ii = 0; ii < num_planetas ; ++ii)
+  {
+    
+      if ( plt != ii)
+      {
+        double r= pow( Posiciones_X(indice(plt, ins_t)) - Posiciones_X(indice(ii, ins_t)), 2) + pow( Posiciones_Y(indice(plt, ins_t)) - Posiciones_Y(indice(ii, ins_t)) , 2)+pow( Posiciones_Z(indice(plt, ins_t))-Posiciones_Z(indice(ii, ins_t)) , 2);
+        ac=(G*masas(ii)*(Posiciones_Y(indice(plt, ins_t))- Posiciones_Y(indice(ii, ins_t))))/pow(r,3/2);
+      }
+      
+    
+  }
+
+
+  return ac;
+}
+
+
+double Aceleracion_Z( int plt, int ins_t)
+{
+
+  double ac;
+  int nt=30;
+  int num_planetas=10;
+  const double G= 4*pow(3.141592, 2);
+ 
+  for (int ii = 0; ii < num_planetas ; ++ii)
+  {
+    
+      if ( plt != ii)
+      {
+        double r= pow( Posiciones_X(indice(plt, ins_t)) - Posiciones_X(indice(ii, ins_t)), 2) + pow( Posiciones_Y(indice(plt, ins_t)) - Posiciones_Y(indice(ii, ins_t)) , 2)+pow( Posiciones_Z(indice(plt, ins_t))-Posiciones_Z(indice(ii, ins_t)) , 2);
+        ac=(G*masas(ii)*(Posiciones_Z(indice(plt, ins_t))- Posiciones_Z(indice(ii, ins_t))))/pow(r,3/2);
+      }
+      
+    
+  }
+
+
+  return ac;
+}
+
+
+
+
 int main(void)
 {
+
+  printf("%e\n", Aceleracion_X(0,0) );
 
 //double *Posiciones_X=malloc(10*nt*sizeof(double));
 
@@ -260,8 +315,32 @@ int main(void)
 //double h;
 //h=Aceleracion(0,0,Posiciones_X);
 //printf("%e\n", h);
-printf("%e\n", Aceleracion(0,0) );
- return 0; 
+//printf("%e\n", Aceleracion_Z() );
+
+
+  int nt=30;
+
+double *Velocidades_intermedias=malloc(10*nt*sizeof(double));
+double dt=0.01;
+for (int i = 0; i < (10); ++i)
+{
+  for (int j = 0; j < (nt-2); ++j)
+  {
+    Velocidades_intermedias[indice(i,j)]= Velocidades_X(indice(i,j)) + (0.5*Aceleracion_X(i,j)*dt);
+
+    double Sig_Posicion= Posiciones_X(indice(i,j+1));
+
+    Sig_Posicion = Posiciones_X(indice(i,j))+(Velocidades_intermedias[indice(i,j)]*dt);
+
+    double Sig_Velocidad = Velocidades_X(indice(i,j+1));
+    Sig_Velocidad = Velocidades_intermedias[indice(i,j)] + (0.5*Aceleracion_X(i,j+1)*dt);
+  }
+  
+}
+
+
+ return 0;
+
 }
 
 
