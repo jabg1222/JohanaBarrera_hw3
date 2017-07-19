@@ -5,9 +5,11 @@
 #include<math.h>
 
 
-int indice( int i, int j, int N)
+int indice( int i, int j)
 {
-  return (N*j)+i;
+  //int nt=7820928;
+  int nt=30;
+  return (nt*j)+i;
 }
 
 
@@ -69,7 +71,8 @@ double Posiciones_X(int index)
 {
 
 
-int nt=30;
+//int nt=7820928;
+  int nt=30;
 double *Posiciones_X=malloc(10*nt*sizeof(double));
 // INICIALIZACION DE LA MATRIZ QUE GUARDA LAS POSICIONES EN X DE LOS PLANETAS
 for (int i = 0; i < (nt*10); ++i)
@@ -91,6 +94,7 @@ return Posiciones_X[index];
 
 double Posiciones_Y(int index)
 {
+  //int nt=7820928;
   int nt=30;
   double *Posiciones_Y=malloc(10*nt*sizeof(double));
   // INICIALIZACION DE LA MATRIZ QUE GUARDA LAS POSICIONES EN Y DE LOS PLANETAS
@@ -106,12 +110,15 @@ for (int i = 0; i < (nt*10); ++i)
   }
   //printf("%e\n", Posiciones_X[i] );
 }
+
+return Posiciones_Y[index];
 }
 
 
 double Posiciones_Z(int index)
 {
 
+  //int nt=7820928;
   int nt=30;
   double *Posiciones_Z=malloc(10*nt*sizeof(double));
 
@@ -129,11 +136,14 @@ for (int i = 0; i < (nt*10); ++i)
   }
   //printf("%e\n", Posiciones_X[i] );
 }
+
+return Posiciones_Z[index];
 }
 
 double Velocidades_X(int index)
 {
 
+  //int nt=7820928;
   int nt=30;
   double *Velocidades_X=malloc(10*nt*sizeof(double));
 
@@ -155,8 +165,8 @@ for (int i = 0; i < (nt*10); ++i)
 
 double Velocidades_Y(int index)
 {
+  //int nt=7820928;
   int nt=30;
-
   double *Velocidades_Y=malloc(10*nt*sizeof(double));
 
 // INICIALIZACION DE LA MATRIZ QUE GUARDA LAS VELOCIDADES EN Y DE LOS PLANETAS
@@ -178,6 +188,7 @@ for (int i = 0; i < (nt*10); ++i)
 
 double Velocidades_Z(int index)
 {
+  //int nt=7820928;
   int nt=30;
   double *Velocidades_Z=malloc(10*nt*sizeof(double));
   // INICIALIZACION DE LA MATRIZ QUE GUARDA LAS VELOCIDADES EN Z DE LOS PLANETAS
@@ -191,34 +202,19 @@ for (int i = 0; i < (nt*10); ++i)
   {
     Velocidades_Z[i]=0;
   }
-  //printf("%e\n", Posiciones_X[i] );
+  //printf("%e\n", Posiciones_X[0] );
+  printf("HOLA \n" );
 }
 }
 
-int main(void)
+double masas(int index)
 {
-
-  double a;
-  double b;
-  a=Posiciones_X(indice(3,0, 30));
-  b=retornamatriz(3,1);
-
-  printf("%e\n %e\n", a, b);
-
-
- return 0; 
-}
-
-
-/*
-double Aceleracion_x( int plt, int ins_t)
-{
-  double masas[10];
-  int a=10;
-  int b=30;
-  double Masa_Solar;
-  Masa_Solar=1.9891*pow(a,b);
-  const int G= 4*pow(3.141592, 2);
+    double masas[10];
+    int a=10;
+    int b=30;
+    double Masa_Solar;
+    Masa_Solar=1.9891*pow(a,b);
+    
 
 
 // CALCULA LAS MASAS EN UNIDADES DE AU
@@ -228,17 +224,48 @@ for (int i = 0; i < 10; ++i)
   //printf("%e\n", masas[i] );
 }
 
-  double acx;
+  return masas[index];
+}
+
+double Aceleracion( int plt, int ins_t)
+{
+
+  double ac;
   int nt=30;
   int num_planetas=10;
+  const double G= 4*pow(3.141592, 2);
+ 
   for (int ii = 0; ii < num_planetas ; ++ii)
   {
-    for (int ins_t = 0; ins_t < nt; ++ins_t)
-    {
-      double r= pow((Posiciones_X(indice(plt, ins_t))-Posiciones_X(indice(ii, ins_t)),2)+pow((Posiciones_Y(indice(plt, ins_t))-Posiciones_Y(indice(ii, ins_t)]),2)+pow((Posiciones_Z(indice(plt, ins_t))-Posiciones_Z(indice(ii, ins_t)),2);
-      acx=(G*retornamatriz[ii][0])/(pow(r,(3/2)));
-    }
+    
+      if ( plt != ii)
+      {
+        double r= pow( Posiciones_X(indice(plt, ins_t)) - Posiciones_X(indice(ii, ins_t)), 2) + pow( Posiciones_Y(indice(plt, ins_t)) - Posiciones_Y(indice(ii, ins_t)) , 2)+pow( Posiciones_Z(indice(plt, ins_t))-Posiciones_Z(indice(ii, ins_t)) , 2);
+        ac=(G*masas(ii)*(Posiciones_X(indice(plt, ins_t))- Posiciones_X(indice(ii, ins_t))))/pow(r,3/2);
+      }
+      
+    
   }
+
+
+  return ac;
 }
- */ 
+
+int main(void)
+{
+
+//double *Posiciones_X=malloc(10*nt*sizeof(double));
+
+
+//double h;
+//h=Aceleracion(0,0,Posiciones_X);
+//printf("%e\n", h);
+printf("%e\n", Aceleracion(0,0) );
+ return 0; 
+}
+
+
+
+
+
 
