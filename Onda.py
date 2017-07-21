@@ -87,10 +87,20 @@ t_60=Onda(60, Tiempo)[0]
 t_30=Onda(30, Tiempo)[0]
 
 plt.imshow(t_60)
+plt.title("Evolucion de la onda a 60 segundos")
+plt.xlabel("Eje x")
+plt.ylabel("Eje y")
+cb=plt.colorbar()
+cb.set_label("Amplitud")
 plt.savefig("Onda_t60.png")
 plt.close()
 
 plt.imshow(t_30)
+plt.title("Evolucion de la onda a 30 segundos")
+plt.xlabel("Eje x")
+plt.ylabel("Eje y")
+cb=plt.colorbar()
+cb.set_label("Amplitud")
 plt.savefig("Onda_t30.png")
 plt.close()
 
@@ -100,10 +110,16 @@ pts=300
 dx_dy=(30)/float(pts-1) 
 lista=Onda(60,Tiempo)[1] 
 fig=plt.figure()
+
 Frame=plt.imshow(np.abs(lista[0]), cmap ="flag", extent=(30+dx_dy, 30-dx_dy,30+dx_dy, 30-dx_dy))
+cb=plt.colorbar()
+cb.set_label("Amplitud")
 
 def animacion(i):
+
 	Frame.set_array(abs(lista[i]))
+
 	return Frame
 
 ani=animation.FuncAnimation(fig, animacion, np.arange(1, len(lista)), interval=20, blit=False)
+ani.save("Onda.mp4")
